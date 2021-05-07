@@ -13,7 +13,7 @@ COPY ./nginx-rtmp-module ./nginx-rtmp-module
 
 WORKDIR /usr/local/nginx/nginx-src
 
-RUN ./configure --add-module=/root/nginx-rtmp-module --with-http_ssl_module
+RUN ./configure --add-module=/usr/local/nginx/nginx-rtmp-module --with-http_ssl_module
 RUN make && make install
 COPY ./conf /usr/local/nginx/conf 
 RUN ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
