@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:latest AS builder
 
 RUN yum -y upgrade 
 
@@ -16,7 +16,11 @@ WORKDIR /usr/local/nginx/nginx-src
 RUN ./configure --add-module=/usr/local/nginx/nginx-rtmp-module --with-http_ssl_module
 RUN make && make install
 COPY ./conf /usr/local/nginx/conf 
-RUN ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
 
+#  运行环境
+FROM centos:latest
+
+COPY --from=builder  /usr/local/nginx /usr/local/nginx
+RUN ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
 WORKDIR /usr/local/nginx
 CMD ["/usr/bin/nginx"]
